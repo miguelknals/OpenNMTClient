@@ -121,7 +121,7 @@ namespace OpenNMTWebClient
                         RS.TargetTranslationONMTREST.pred_score));
 
                 }
-                Console.WriteLine("End");
+
             }
             else
             {
