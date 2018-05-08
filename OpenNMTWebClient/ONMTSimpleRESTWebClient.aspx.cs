@@ -42,7 +42,7 @@ namespace OpenNMTWebClient
             {
                 inputText = inputText.Replace(c.ToString(), c.ToString() + Environment.NewLine);
             }
-            // remove New line from \d\.Enviroment.Newline\d
+            // remove New line from \d\.Enviroment.Newline\d p.e. 334.\r\n\344
 
             string pattern = @"\d\.(\n|\r|\r\n)\d";
             var maches = Regex.Matches(inputText, pattern);
@@ -54,7 +54,7 @@ namespace OpenNMTWebClient
                 auxS2 = auxS2.Replace("\r", "");
                 inputText = inputText.Replace(auxS, auxS2);
             }
-            //
+            // elipses
             var regex = new Regex(@"\.(\n|\r|\r\n)\.");
             Match match = regex.Match(inputText);
             if (match.Success)
@@ -66,11 +66,7 @@ namespace OpenNMTWebClient
                     inputText = inputText.Replace(".\r\n.", "..");
                 }
                 while (strControl.CompareTo(inputText) != 0);
-
             }
-
-
-
             // apostrophe quotes
             // \u2018  LEFT SINGLE QUOTATION MARK	‘
             // \u2019 ’ 
@@ -89,13 +85,8 @@ namespace OpenNMTWebClient
             }
 
             string[] separators = { Environment.NewLine }; // only one
-            // dividing
-            sentences = inputText.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-            // removing blank entries
-            sentences = sentences.Where(x => !string.IsNullOrEmpty(x.Trim())).ToArray();
-            //foreach (string s in sentences) {
-            //    sbSalida.Append(string.Format("Sentence: {0} <br />" , s));
-            // }
+            sentences = inputText.Split(separators, StringSplitOptions.RemoveEmptyEntries); // splitting
+            sentences = sentences.Where(x => !string.IsNullOrEmpty(x.Trim())).ToArray(); // removing blanks
 
             var RESTClientData = new RESTClientDataC()
             { // SL and indicator
@@ -121,8 +112,17 @@ namespace OpenNMTWebClient
                         RS.TargetTranslationONMTREST.pred_score));
 
                 }
-                Console.WriteLine("TEST");
+                Console.WriteLine("*************   REST Info    ****************");
+                foreach (RESTSentence RS in RESTClientData.SentecesListREST) // Detailed info
+                {
+                    Console.WriteLine(RS.TargetTranslationONMTREST.tgt);
+                    auxS = "<br>{0}<br>";
+                    sbSalida.Append(string.Format(auxS,
+                        RS.infoREST));
 
+                }
+                
+                
             }
             else
             {

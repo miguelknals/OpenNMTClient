@@ -78,17 +78,28 @@ namespace OpenNMTWebClient
             {
                 var src = new SourceONMT() { src = i.sourceREST };
                 var serializer = new JavaScriptSerializer();
-                var json = "[" + serializer.Serialize(src) + "]";
+                string json = "[" + serializer.Serialize(src) + "]";
+                i.infoREST += string.Format("Json2Rest -> {0}" +"<br>", json); 
                 var SC = new StringContent(json, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = client.PostAsync(
                     "translator/translate", SC).GetAwaiter().GetResult();
                 if (response.IsSuccessStatusCode)
                 {
+                    i.infoREST += "Response OK"; 
                     string data = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    i.infoREST += string.Format("Json2Rest -> {0}" + "<br>", data); 
                     data = data.Replace("[[", ""); data = data.Replace("]]", "");
+                    i.infoREST += string.Format("Json2Rest [[ stripped -> {0}" + "<br>", data); 
                     JavaScriptSerializer JSserializer = new JavaScriptSerializer();
                     TT = JSserializer.Deserialize<TargetTranslationONMT>(data);
+                    i.infoREST += string.Format("Target serialized OK!" + "<br>", data); 
                 }
+                else
+                {
+                    i.infoREST += "ERROR in response. ";
+                    i.todoOKREST = false;
+                }
+
 
                 Console.WriteLine("Trad ->{0}", TT.tgt);
                 Console.WriteLine("................");
@@ -100,8 +111,8 @@ namespace OpenNMTWebClient
             }
             catch (Exception e)
             {
-                i.todoOKREST = false; // optimism
-                i.infoREST = e.Message;
+                i.todoOKREST = false; // error
+                i.infoREST += e.Message + Environment.NewLine;
                 Console.WriteLine(e.Message);
             }
             return i;
