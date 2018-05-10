@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 
+
 // Request validation disable for <xxx> allowed.
 // https://stackoverflow.com/questions/3656523/how-to-disable-html-tag-validation-on-a-specific-textbox
 namespace OpenNMTWebClient
@@ -27,13 +28,11 @@ namespace OpenNMTWebClient
         protected void Button1_Click(object sender, EventArgs e)
         {
             StringBuilder sbSalida = new StringBuilder("");
+              
             string auxS = "";
             string inputText = "";
             string[] sentences;
             sbSalida.Append("Input text (uncoded):<br />");
-            // sbSalida.Append(txtToT.Text + "<br />");
-            // auxS += "Input text (HTML encoded):<br />";
-            // auxS += Server.HtmlEncode(txtToT.Text) +"<br />";
             inputText = txtToT.Text;
             // ... 
 
@@ -88,50 +87,37 @@ namespace OpenNMTWebClient
             sentences = inputText.Split(separators, StringSplitOptions.RemoveEmptyEntries); // splitting
             sentences = sentences.Where(x => !string.IsNullOrEmpty(x.Trim())).ToArray(); // removing blanks
 
-            var RESTClientData = new RESTClientDataC()
-            { // SL and indicator
-                sentenceList = sentences,
-                todoOK = false,
-                SentecesListREST = new List<RESTSentence>()
-            };
-            var rClient = new RESTClient("www.mknals.com", 4031);
-            rClient.TranslateRESTClientData(RESTClientData);
+            var RESTClientData = new RESTClientDataC(sentences); // only parameter senteces
+            var rClient = new RESTClient("www.mknals.com", 4031); // Rest client
+            //rClient.TranslateRESTClientData(RESTClientData);
+            rClient.TranslateRESTClientData1by1(RESTClientData);
 
-            if (RESTClientData.todoOK)
+            if (RESTClientData.todoOKREST) // translation was fine
             {
                 Console.WriteLine("OK");
                 // Translation inside RESTClientDATA
                 // we need to search in each RESTSEentence
-                foreach (RESTSentence RS in RESTClientData.SentecesListREST)
+                for (int i = 0; i < RESTClientData.ListSourceONMT.Count; i++)
                 {
-                    Console.WriteLine(RS.TargetTranslationONMTREST.tgt);
-                    auxS = "<br>{0}<br><b>{1}</b> - ({2})<br />";
+                    auxS = "<br>{1}<br>{0}<br><b>{2}</b> - ({3})<br />";
                     sbSalida.Append(string.Format(auxS,
-                        RS.sourceREST,
-                        RS.TargetTranslationONMTREST.tgt,
-                        RS.TargetTranslationONMTREST.pred_score));
-
+                        RESTClientData.ListSourceONMT[i].src,
+                        RESTClientData.ListTargetONMT[i][0].src, 
+                        RESTClientData.ListTargetONMT[i][0].tgt,
+                        RESTClientData.ListTargetONMT[i][0].pred_score));
+                    
                 }
-                Console.WriteLine("*************   REST Info    ****************");
-                foreach (RESTSentence RS in RESTClientData.SentecesListREST) // Detailed info
-                {
-                    Console.WriteLine(RS.TargetTranslationONMTREST.tgt);
-                    auxS = "<br>{0}<br>";
-                    sbSalida.Append(string.Format(auxS,
-                        RS.infoREST));
-
-                }
-                
-                
+                                
             }
             else
             {
                 Console.WriteLine("Translation ERROR");
+                sbSalida.Append("Translation ERROR in RESTClientData.todoOKREST" + "<br>");
+                sbSalida.Append(RESTClientData.infoREST + "<br>");
             }
 
-
-
-            lblOut.Text = sbSalida.ToString();
+            
+            lblOut.Text = sbSalida.ToString()+"<br>" ;
             // Aquí el código para llamar 
         }
 
