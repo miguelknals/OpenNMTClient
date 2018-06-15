@@ -1,0 +1,30 @@
+﻿html *
+body {
+    
+   font-family: monospace;
+    
+}
+ Label
+    {
+        font-family: monospace,
+    }
+    Hyperlink
+    {
+        font-family:monospace;
+    }
+    TextBox
+    {
+        font-family:monospace;
+    }
+a
+{
+    font-family:monospace;
+}
+table 
+{
+    font-family:monospace;
+}
+input
+{
+    font-family:monospace;
+}

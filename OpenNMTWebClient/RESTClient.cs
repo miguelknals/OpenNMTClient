@@ -11,7 +11,8 @@ using System.Web.Script.Serialization; // para serializer
 
 namespace OpenNMTWebClient
 {
-    class RESTClientDataC
+
+    public class RESTClientDataC
     {
         public string[] rawsentences { get; set; }
         public List<SourceONMT> ListSourceONMT { get; set; } // Json is returned as a list
@@ -36,7 +37,7 @@ namespace OpenNMTWebClient
         public string src { get; set; }
         public string tgt { get; set; }
     }
-    class RESTClient
+    public class RESTClient 
     {
         string host;
         int port;
@@ -48,6 +49,7 @@ namespace OpenNMTWebClient
             client = new HttpClient(); // client here as any funciton can use it
             client.BaseAddress = new Uri(string.Format("http://{0}:{1}/", host, port));
             // client.BaseAddress = new Uri("http://www.mknals.com:4031/");
+
         }
         public RESTClientDataC TranslateRESTClientData1by1 (RESTClientDataC RESTClientDATA)
         {
@@ -59,7 +61,7 @@ namespace OpenNMTWebClient
                 sentence[0]= s;                
                 RESTClientDataC auxRESTClientData = new RESTClientDataC (sentence);
                 auxRESTClientData= TranslateRESTClientData(auxRESTClientData);
-                
+                Console.Write(".");
                 if (auxRESTClientData.todoOKREST )
                 {            
                     RESTClientDATA.todoOKREST=auxRESTClientData.todoOKREST;
@@ -75,7 +77,7 @@ namespace OpenNMTWebClient
                     break;
                 } 
             }
-
+            Console.WriteLine();
             return RESTClientDATA;
 
             
@@ -121,7 +123,7 @@ namespace OpenNMTWebClient
             }
             catch (Exception e)
             {
-                RESTClientDATA.infoREST += "FATAL ERROR in response. " + e.Message + "<br>";
+                RESTClientDATA.infoREST += "<b>FATAL ERROR in response. Check server settings. " + e.Message + "<\b>"+"<br>";
                 RESTClientDATA.todoOKREST = false;
 
             }

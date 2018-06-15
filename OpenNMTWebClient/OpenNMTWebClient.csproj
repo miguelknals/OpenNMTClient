@@ -70,6 +70,7 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="ONMTSimpleRESTWebClient.aspx" />
+    <Content Include="OpenNMTWebClient.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
