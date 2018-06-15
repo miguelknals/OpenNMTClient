@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenNMTWebClient", "OpenNMT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenNMTConsoleClient", "OpenNMTConsoleClient\OpenNMTConsoleClient.csproj", "{7D18FBDB-F5F9-4F37-986A-35E0EA4D297B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B5322866-5F0B-4338-938C-AA54CFD753C3}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3FDD3B3B-814F-4F5C-911A-65A546814FF3}"
 	ProjectSection(SolutionItems) = preProject
-		readme.html = readme.html
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Global
