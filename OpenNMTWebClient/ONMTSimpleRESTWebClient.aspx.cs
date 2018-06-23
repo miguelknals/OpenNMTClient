@@ -45,7 +45,7 @@ namespace OpenNMTWebClient
                     }                   
                 }
 
-                lblCookie.Text += "Pls, type/paste some text.";
+                lblCookie.Text += "Enter your settings and save them if you want so.";
                 return;
             }
         }
@@ -131,6 +131,11 @@ namespace OpenNMTWebClient
             string[] separators = { Environment.NewLine }; // only one
             sentences = inputText.Split(separators, StringSplitOptions.RemoveEmptyEntries); // splitting
             sentences = sentences.Where(x => !string.IsNullOrEmpty(x.Trim())).ToArray(); // removing blanks
+
+            for (int i=0 ; i < sentences.Length ; i += 1)
+            {
+                sentences[i] = sentences[i].Trim();
+            }
             
             var RESTClientData = new RESTClientDataC(sentences); // only parameter senteces
             var rClient = new RESTClient(txtHost.Text, Int32.Parse(txtPort.Text)); // Rest client

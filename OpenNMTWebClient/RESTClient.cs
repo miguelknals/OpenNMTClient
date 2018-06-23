@@ -84,7 +84,6 @@ namespace OpenNMTWebClient
         }
         public RESTClientDataC TranslateRESTClientData(RESTClientDataC RESTClientDATA)
         {
-            string t = string.Format("http://{0}:{1}/", host, port); // target translation
             // we need to iniatalize the RESTClientData classs
             foreach (string s in RESTClientDATA.rawsentences)
             {
