@@ -25,7 +25,7 @@ There is a text box where you can paste some text. The program provides by defau
 You also can display more detailed info from the JSON response.
 
 
-![OpenNTMWebClient page](\readme1.GIF) 
+![OpenNTMWebClient page](readme1.GIF) 
 
 ### 1.2.1 OpenNMT REST API Server
 
@@ -34,15 +34,7 @@ You also can display more detailed info from the JSON response.
 
 ```
 th tools/rest_translation_server.lua -host your.host.com
-```  
-``` 
- -port nnn -case_feature true [-joiner_annotate true -joiner ￭
-```  
-``` 
- -mode aggressive -replace_unk  -segment_numbers]
-```  
-``` 
- -model /your/model.t7 [-gpuid 1]
+ -port nnn -case_feature true [-joiner_annotate true -joiner ￭ -mode aggressive -replace_unk  -segment_numbers] -model /your/model.t7 [-gpuid 1]
 ```  
 
 ## 1.3 Very general info about the code
