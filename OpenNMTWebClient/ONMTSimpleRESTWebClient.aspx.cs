@@ -1,4 +1,5 @@
-﻿using System;
+﻿// (c) 2018 miguel canals -  www.mknals.com - MIT License
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;

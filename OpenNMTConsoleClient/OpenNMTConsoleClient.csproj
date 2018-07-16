@@ -46,6 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\OpenNMTWebClient\RESTClient.cs">
+      <Link>RESTClient.cs</Link>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -53,10 +56,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OpenNMTWebClient\OpenNMTWebClient.csproj">
-      <Project>{428c9b83-0aaf-408d-a009-5a4061622290}</Project>
-      <Name>OpenNMTWebClient</Name>
-    </ProjectReference>
+    <Folder Include="sample\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿// (c) 2018 miguel canals -  www.mknals.com - MIT License
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Web;
 using System.Web.Script.Serialization; // para serializer need to now add reference System.Web.Extensions
-using OpenNMTWebClient;
+// using OpenNMTWebClient;
       
 
 namespace OpenNMTConsoleClient
@@ -27,22 +28,32 @@ namespace OpenNMTConsoleClient
         public string inputFile { get; set; }
         public int Port { get; set; }
         public string Host { get; set; }
-        public bool bBitxt { get; set; }
-        public bool bJSON { get; set; }
-        public bool bSenSeg { get; set; }
         public string info { get; set; }
         string[] args { get; set; }
         public classCommandArguments(string[] args)
         { // default constructor uses args[] and if todoK 
+            string nl = Environment.NewLine; // string parseInfo = "";
+            string help = "";
+            help += nl;
+            help += "This program will read an inputfile to be translated. Each line must " +nl;
+            help += "contain ONE sentence to translate. " + nl;
+            help += nl;
+            help += "You need and OpenNMT API Server (host and port)" + nl;
+            help += nl;
+            help += "It will create 3 files. inputfile.src.txt, inputfile.tgt.txt and inputfile.json" + nl;
+            help += nl;
+            help += "Valid format is:" + nl;
+            help += "OpenNMTConsoleClient -h host -p port -f inputfile " + nl;
+            
             this.todoOK = true; // optimism
             this.info = "";
             if (args.Length == 0)
             {
-                this.info = "Please enter a numeric argument.";
+                this.info = "You have to provide a OpenNMT host and port and an input file. " +nl; 
+                this.info += help;
                 this.todoOK = false;
                 return;
             }
-            string nl = Environment.NewLine; // string parseInfo = "";
             bool bHost = false; bool bPort = false; bool bFile = false;
             // bool bBitxt = false; bool bJSON = false; bool bSenSeg = false;
             string Host = ""; int Port = 0; string inputFile = "";
@@ -81,22 +92,16 @@ namespace OpenNMTConsoleClient
                         "File -> No info after -f parameter of file '{0}' does not exist. ",
                         inputFile) + nl : "";
                 }
-                if (args[i].ToUpper().Equals("-BITEXT") | args[i].ToUpper().Equals("-B"))
-                { this.bBitxt = true; args[i] = ""; }
-                if (args[i].ToUpper().Equals("-JSON") | args[i].ToUpper().Equals("-J"))
-                { this.bJSON = true; args[i] = ""; }
-                if (args[i].ToUpper().Equals("-SENSEG") | args[i].ToUpper().Equals("-S"))
-                { this.bJSON = true; args[i] = ""; }
                                 
             }
-            if (!(bHost && bPort && bFile && bFile))
+            if (!(bHost && bPort && bFile))
             {
                 // Console.WriteLine("Parser error " + nl + parseInfo);
                 this.todoOK = false;
-                // string CommandArguments = "-h www.mkanls.com -p 4301 -f c:\tmp\tmp.txt [-EOFT] ";
-                this.info += nl;
-                this.info += "Valid format is:" + nl;
-                this.info += "OpenNMTConsoleClient -h host -p port -f inputfile [-B[ITEXT]] [-J[SON] [-S[ENSEG]" + nl;
+                
+                // string CommandArguments = "-h www.mkanls.com -p 4301 -f c:\tmp\tmp.txt"
+                this.info += help;
+                
 
             }
 
@@ -140,6 +145,7 @@ namespace OpenNMTConsoleClient
                 
         static void Main(string[] args)
         {
+            Console.WriteLine("OpnNMTConsoleClient (c) 2018 miguel canals -  www.mknals.com - MIT License");
             // string CommandArguments = "-h www.mkanls.com -p 4301 -f c:\tmp\tmp.txt [-EOFT] ";
             classCommandArguments argumentos = new classCommandArguments(args);
             if (argumentos.todoOK == false) {
@@ -158,17 +164,24 @@ namespace OpenNMTConsoleClient
 
             StreamReader sr = new StreamReader(INPfile, Encoding.UTF8, true); // input file
             string OUTfilesrc;
-            OUTfilesrc = Path.GetDirectoryName(INPfile) + "\\" +
-                Path.GetFileNameWithoutExtension(INPfile) + ".src" + 
-                Path.GetExtension(INPfile);
+            OUTfilesrc = Path.GetFileNameWithoutExtension(INPfile) + ".src" + Path.GetExtension(INPfile);
+            if (Path.GetDirectoryName(INPfile) != "") {
+                OUTfilesrc = Path.GetDirectoryName(INPfile) + "\\" + OUTfilesrc; }
+
             string OUTfiletgt;
-            OUTfiletgt = Path.GetDirectoryName(INPfile) + "\\" +
-                Path.GetFileNameWithoutExtension(INPfile) + ".tgt" +
-                Path.GetExtension(INPfile);
+            OUTfiletgt = Path.GetFileNameWithoutExtension(INPfile) + ".tgt" + Path.GetExtension(INPfile);
+            if (Path.GetDirectoryName(INPfile) != "")
+            {
+                OUTfiletgt = Path.GetDirectoryName(INPfile) + "\\" + OUTfiletgt;
+            }
+
             string OUTfilejson;
-            OUTfilejson = Path.GetDirectoryName(INPfile) + "\\" +
-                Path.GetFileNameWithoutExtension(INPfile) + ".json";
-            
+            OUTfilejson = Path.GetFileNameWithoutExtension(INPfile) + ".json";
+            if (Path.GetDirectoryName(INPfile) != "")
+            {
+                OUTfilejson = Path.GetDirectoryName(INPfile) + "\\" + OUTfilejson;
+            }
+
             List<String> listsentences = new List<String>();
             // apostrophe quotes
             //
@@ -178,8 +191,10 @@ namespace OpenNMTConsoleClient
             // \u201D RIGHT DOUBLE QUOTATION MARK	”
             char[] tipochar = new char[] { '\u2018',
                 '\u2019',  '\u201C', '\u201D' };
+
             try
             {
+                int nlines = 0;
                 using (sr)
                 {
                     while (sr.Peek() != -1)
@@ -200,13 +215,18 @@ namespace OpenNMTConsoleClient
 
                             }
                             listsentences.Add(line); // add the sentence to list of senteces
-                            Console.WriteLine(line); 
+                            nlines += 1;
+                            // Console.WriteLine(line); 
                         }
 
                     }
-                    sr.Close();                    
+                    Console.WriteLine(string.Format("File {0} -> {1} lines", INPfile, nlines));
+                    
+                    sr.Close();
                 }
-
+                // Just for info
+                Console.WriteLine("Detected encoding ->  {0}.", GetFileEncoding(INPfile));
+                
             }
             catch (Exception e)
             {
@@ -220,14 +240,9 @@ namespace OpenNMTConsoleClient
             
             var RESTClientData = new RESTClientDataC(sentences); // only parameter senteces
             var rClient = new RESTClient(RESThost, RESTport); // Rest client
-            if (false)
-            { // sen all as 1 REST request
-                rClient.TranslateRESTClientData(RESTClientData);
-            }
-            else
-            { // Send senteces 1 by 1
-                rClient.TranslateRESTClientData1by1(RESTClientData);
-            }
+            rClient.TranslateRESTClientData1by1(RESTClientData);
+            
+            // Use rClient.TranslateRESTClientData(RESTClientData); not good idea for a text file
 
             if (RESTClientData.todoOKREST) // translation was fine
             {
@@ -306,57 +321,84 @@ namespace OpenNMTConsoleClient
             }
 
             
+            // Only for debug           
+                       
+            //if (RESTClientData.todoOKREST) // translation was fine
+            //{
+            ////   Console.WriteLine("OK");
+            ////    // Translation inside RESTClientDATA
+           //     // we need to search in each RESTSEentence
+           //     bool verbose = true;
+           //     verbose = false;
+           //     for (int i = 0; i < RESTClientData.ListSourceONMT.Count; i++)
+           //     {
+           //         if (verbose)
+           //         {
+           //             string auxS = "<br>{1}<br>{0}<br><b>{2}</b> - ({3})<br>";
+           //             auxS = string.Format(auxS,
+           //                 RESTClientData.ListSourceONMT[i].src,
+           //                 RESTClientData.ListTargetONMT[i][0].src,
+           //                 RESTClientData.ListTargetONMT[i][0].tgt,
+           //                 RESTClientData.ListTargetONMT[i][0].pred_score);
+           //             auxS = auxS.Replace("<br>", Environment.NewLine);
+           //             auxS = auxS.Replace("<b>", "");
+           //             auxS = auxS.Replace("</b>", "");
+           //             Console.WriteLine(auxS);
+           //             
+           //         }
+           //         else
+           //         {
+           //             string auxS = "<br>{0}<br><b>{1}</b><br>";
+           //             auxS= string.Format(auxS,
+           //                 RESTClientData.ListSourceONMT[i].src,
+           //                 RESTClientData.ListTargetONMT[i][0].tgt);
+           //             auxS = auxS.Replace("<br>", Environment.NewLine);
+           //             auxS = auxS.Replace("<b>", "");
+           //             auxS = auxS.Replace("</b>", "");
+           //             Console.WriteLine(auxS);
+           //         }
+           //
+           //
+           //     }
+           //
+           // }
+           // else
+           // {
+           //     Console.WriteLine("Translation ERROR");
+           //     Console.WriteLine("Translation ERROR in RESTClientData.todoOKREST" + "<br>");
+           //     Console.WriteLine(RESTClientData.infoREST + "<br>");
+           // }
+           // Console.ReadLine();
+            Console.WriteLine("Done!");
 
-            
+        }
+        public static Encoding GetFileEncoding(string srcFile)
+        {
+            // Based on 
+            // https://weblog.west-wind.com/posts/2007/Nov/28/Detecting-Text-Encoding-for-StreamReader
+            // *** Use Default of Encoding.Default (Ansi CodePage)
 
-            
-            if (RESTClientData.todoOKREST) // translation was fine
-            {
-                Console.WriteLine("OK");
-                // Translation inside RESTClientDATA
-                // we need to search in each RESTSEentence
-                bool verbose = true;
-                verbose = false;
-                for (int i = 0; i < RESTClientData.ListSourceONMT.Count; i++)
-                {
-                    if (verbose)
-                    {
-                        string auxS = "<br>{1}<br>{0}<br><b>{2}</b> - ({3})<br>";
-                        auxS = string.Format(auxS,
-                            RESTClientData.ListSourceONMT[i].src,
-                            RESTClientData.ListTargetONMT[i][0].src,
-                            RESTClientData.ListTargetONMT[i][0].tgt,
-                            RESTClientData.ListTargetONMT[i][0].pred_score);
-                        auxS = auxS.Replace("<br>", Environment.NewLine);
-                        auxS = auxS.Replace("<b>", "");
-                        auxS = auxS.Replace("</b>", "");
-                        Console.WriteLine(auxS);
-                        
-                    }
-                    else
-                    {
-                        string auxS = "<br>{0}<br><b>{1}</b><br>";
-                        auxS= string.Format(auxS,
-                            RESTClientData.ListSourceONMT[i].src,
-                            RESTClientData.ListTargetONMT[i][0].tgt);
-                        auxS = auxS.Replace("<br>", Environment.NewLine);
-                        auxS = auxS.Replace("<b>", "");
-                        auxS = auxS.Replace("</b>", "");
-                        Console.WriteLine(auxS);
-                    }
+            Encoding enc = Encoding.Default;
+            // *** Detect byte order mark if any - otherwise assume default
+
+            byte[] buffer = new byte[5];
+            FileStream file = new FileStream(srcFile, FileMode.Open);
+            file.Read(buffer, 0, 5);
+            file.Close();
 
 
-                }
+            if (buffer[0] == 0xef && buffer[1] == 0xbb && buffer[2] == 0xbf)
+                enc = Encoding.UTF8;
 
-            }
-            else
-            {
-                Console.WriteLine("Translation ERROR");
-                Console.WriteLine("Translation ERROR in RESTClientData.todoOKREST" + "<br>");
-                Console.WriteLine(RESTClientData.infoREST + "<br>");
-            }
+            else if (buffer[0] == 0xfe && buffer[1] == 0xff)
+                enc = Encoding.Unicode;
 
-            Console.ReadLine();
+            else if (buffer[0] == 0 && buffer[1] == 0 && buffer[2] == 0xfe && buffer[3] == 0xff)
+                enc = Encoding.UTF32;
+
+            else if (buffer[0] == 0x2b && buffer[1] == 0x2f && buffer[2] == 0x76)
+                enc = Encoding.UTF7;
+            return enc;
 
         }
     }

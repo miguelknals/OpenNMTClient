@@ -38,7 +38,7 @@
                     <br />
                     <b>By default this page uses a CATALAN -&gt; SPANISH model. This model uses the Diari Oficial de la Generalitat de Catalunya corpus. You can try to translate from catalan to spanish for instance any text from:</b><br />
                     <br />
-                    <a href="http://dogc.gencat.cat/ca/pdogc_canals_interns/pdogc_resultats_fitxa/?action=fitxa&amp;documentId=820643&amp;language=ca_ES">http://dogc.gencat.cat/ca/pdogc_canals_interns/pdogc_resultats_fitxa/?action=fitxa&amp;documentId=820643&amp;language=ca_ES</a><br />
+                    <a href="http://dogc.gencat.cat/ca/pdogc_canals_interns/pdogc_resultats_fitxa/?action=fitxa&amp;documentId=820643&amp;language=ca_ES" target="_blank">http://dogc.gencat.cat/ca/pdogc_canals_interns/pdogc_resultats_fitxa/?action=fitxa&amp;documentId=820643&amp;language=ca_ES</a><br />
                     <br />
                     This is proof of concept/development server, no availability or perfomance guarantee.<br />
                     <br />
@@ -51,7 +51,7 @@
                     [-joiner_annotate true -joiner ￭ -mode aggressive -replace_unk -segment_numbers] \<br />
                     -model /your/model.t7 [-gpuid 1]<br />
                     <br />
-                    - You can find the source and the readme file in <a href="https://github.com/miguelknals/OpenNMTClient">https://github.com/miguelknals/OpenNMTClient</a><br />
+                    - You can find the source and the readme file in <a href="https://github.com/miguelknals/OpenNMTClient" target="_blank">https://github.com/miguelknals/OpenNMTClient</a><br />
                     <br />
                 </td>
                 <td>&nbsp;</td>
@@ -78,7 +78,7 @@
                             <tr>
                                 <td class="auto-style4">Port</td>
                                 <td class="auto-style4">
-                                    <asp:TextBox ID="txtPort" runat="server">4031</asp:TextBox>
+                                    <asp:TextBox ID="txtPort" runat="server">4040</asp:TextBox>
                                 </td>
                                 <td class="auto-style4"></td>
                             </tr>

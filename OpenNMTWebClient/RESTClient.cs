@@ -9,8 +9,7 @@ using System.Net.Http.Headers; // algunas características Headers
 using System.Web.Script.Serialization; // para serializer
 
 
-namespace OpenNMTWebClient
-{
+
 
     public class RESTClientDataC
     {
@@ -39,8 +38,8 @@ namespace OpenNMTWebClient
     }
     public class RESTClient 
     {
-        string host;
-        int port;
+        public string host;
+        public int port;
         HttpClient client;
         public RESTClient(string hhost, int pport)
         {
@@ -57,10 +56,11 @@ namespace OpenNMTWebClient
             // with just one sentence, and the response is add manually to the 
             // RESTClientDATA. 
             string[] sentence ={""}; // I will pass just one sentence
+            Console.WriteLine(string.Format("Connecting {0}:{1}. Warning, first call takes some time. One dot per API REST sentence call. ", host, port));                            
             foreach (string s in RESTClientDATA.rawsentences) {
                 sentence[0]= s;                
                 RESTClientDataC auxRESTClientData = new RESTClientDataC (sentence);
-                auxRESTClientData= TranslateRESTClientData(auxRESTClientData);
+                auxRESTClientData= TranslateRESTClientData(auxRESTClientData);                
                 Console.Write(".");
                 if (auxRESTClientData.todoOKREST )
                 {            
@@ -100,10 +100,12 @@ namespace OpenNMTWebClient
                 string json = serializer.Serialize(RESTClientDATA.ListSourceONMT);
                 RESTClientDATA.infoREST = string.Format("Json2Rest -> {0}" + "<br>", json);
                 var SC = new StringContent(json, Encoding.UTF8, "application/json");
+                //Console.Write("P");
                 HttpResponseMessage response = client.PostAsync(
                     "translator/translate", SC).GetAwaiter().GetResult();
                 if (response.IsSuccessStatusCode)
                 {
+                    // Console.Write("R");
                     RESTClientDATA.infoREST += "Response OK" + "<br>";
                     string data = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                     RESTClientDATA.infoREST += string.Format("Json2Rest -> {0}" + "<br>", data);
@@ -132,4 +134,3 @@ namespace OpenNMTWebClient
         
 
     }
-}
