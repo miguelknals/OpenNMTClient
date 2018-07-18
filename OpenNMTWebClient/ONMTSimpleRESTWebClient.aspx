@@ -155,7 +155,7 @@
         <asp:Label ID="lblOut" runat="server" Text="lblOut"></asp:Label>
                     <br />
                     <br />
-                    (c) 2018 miguel canals -&nbsp; <a href="http://www.mknals.com">www.mknals.com</a> - MIT License</td>
+                    (c) 2018 miguel canals -&nbsp; <a href="http://www.mknals.com" target="_blank">www.mknals.com</a> - MIT License</td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
             </tr>

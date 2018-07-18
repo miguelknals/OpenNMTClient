@@ -1,6 +1,6 @@
 # 1 OpenNMTClient - OpenNMT C# REST API Client   
 
-OpenNMT is a open source code for Neuronal Machine Translation ([http://opennmt.net/](http://opennmt.net/)). OpenNMT provides a REST API server for a translation based in model.
+OpenNMT is an open source code for Neuronal Machine Translation ([http://opennmt.net/](http://opennmt.net/)). OpenNMT provides a REST API server for a translation based in model.
 
 This repository has a C# Visual Studio 2013 Net 4.5.1 solution in order send and receive JSON calls to the OpenNMT API REST server for the translation process.
 
@@ -14,7 +14,7 @@ In order to run the samples you need to connect to OpenNMT REST API server.
 
 ## 1.2 OpenNMTWebClient
 
-Not sure for how long, but you can find a online deployment of this solution in:
+Not sure for how long, but you can find an online deployment of this solution in:
 
 <a href="http://213.97.57.158/OpenNMTWebClient/ONMTSimpleRESTWebClient.aspx" target="_blank">http://213.97.57.158/OpenNMTWebClient/ONMTSimpleRESTWebClient.aspx</a>
 
@@ -79,3 +79,11 @@ The main core is in RESTClient.cs. This code is shared for the console program a
 ## 1.5 References
 
 Some help has been provided by reading the Panos Kanavos / Jean Senellart plugin [https://github.com/OpenNMT/Plugins](https://github.com/OpenNMT/Plugins). My ack here!
+
+## 99 Misc
+
+(c) miguel canals, 2018 - www.mknals.com 
+
+MIT License
+
+For more info pls, vist <a href="www.mknals.com" target="_blank">www.mknals.com</a>

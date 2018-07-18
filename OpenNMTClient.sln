@@ -9,6 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenNMTConsoleClient", "Ope
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3FDD3B3B-814F-4F5C-911A-65A546814FF3}"
 	ProjectSection(SolutionItems) = preProject
+		readme.html = readme.html
 		readme.md = readme.md
 		readme1.GIF = readme1.GIF
 	EndProjectSection
